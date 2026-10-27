@@ -2,6 +2,11 @@ Clone Repo
 
 ```bash
 git clone https://github.com/abmnasim/site-checker.git
+```
+
+Install Dependencies
+
+```bash
 cd sitepulse
 npm install
 ```
