@@ -1,0 +1,323 @@
+:root {
+  color-scheme: dark;
+}
+body {
+  background:
+    radial-gradient(900px 500px at 10% -10%, #5b3df566, transparent 60%),
+    radial-gradient(800px 500px at 100% 0%, #00e5b033, transparent 55%),
+    radial-gradient(700px 600px at 50% 110%, #ff3d7f22, transparent 60%),
+    #0d0a26;
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+.glass {
+  background: #ffffff0d;
+  backdrop-filter: blur(14px);
+  border: 1px solid #ffffff1a;
+}
+@keyframes alarm {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 0 #ff2d5590,
+      inset 0 0 0 1px #ff2d55;
+    background: #ffffff0d;
+  }
+  50% {
+    box-shadow:
+      0 0 34px 6px #ff2d55aa,
+      inset 0 0 0 2px #ff2d55;
+    background: #ff2d5538;
+  }
+}
+.alert-blink {
+  animation: alarm 0.9s ease-in-out infinite;
+}
+@keyframes ping-ring {
+  0% {
+    transform: scale(1);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(2.6);
+    opacity: 0;
+  }
+}
+.dot-live::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 9999px;
+  background: inherit;
+  animation: ping-ring 1.6s ease-out infinite;
+}
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.rise {
+  animation: rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .alert-blink,
+  .dot-live::after,
+  .rise {
+    animation: none;
+  }
+}
+
+/* ---- animated dashboard ---- */
+body::before {
+  content: "";
+  position: fixed;
+  inset: -20%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(600px 400px at 20% 30%, #7c5cff40, transparent 60%),
+    radial-gradient(500px 400px at 80% 60%, #00e5b030, transparent 60%);
+  animation: drift 18s ease-in-out infinite alternate;
+}
+@keyframes drift {
+  to {
+    transform: translate(4%, -3%) scale(1.12);
+  }
+}
+.row {
+  transition:
+    border-color 0.25s,
+    box-shadow 0.25s,
+    transform 0.25s;
+}
+.row:hover {
+  border-color: #8b7bff99;
+  box-shadow: 0 14px 44px -14px #7c5cffaa;
+  transform: translateY(-2px);
+}
+.row-up::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    100deg,
+    transparent 35%,
+    #2ee6a61f 50%,
+    transparent 65%
+  );
+  transform: translateX(-100%);
+  animation: sweep 6s linear infinite;
+}
+@keyframes sweep {
+  to {
+    transform: translateX(100%);
+  }
+}
+@keyframes grow {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+.bar-in {
+  transform-origin: bottom;
+}
+.row:hover .bar-in {
+  animation: grow 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+.draw {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: draw 1.4s ease forwards;
+}
+@keyframes draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes pop {
+  from {
+    opacity: 0;
+    transform: scale(0.96) translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+.pop {
+  animation: pop 0.35s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  body::before,
+  .row-up::after,
+  .draw,
+  .pop,
+  .row:hover .bar-in {
+    animation: none;
+  }
+  .draw {
+    stroke-dashoffset: 0;
+  }
+}
+
+/* ---- buttons ---- */
+.pbtn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+  overflow: hidden;
+  isolation: isolate;
+  border: 1px solid transparent;
+  border-radius: 9999px;
+  padding: 0.65rem 1.15rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  line-height: 1;
+  color: #fff;
+  cursor: pointer;
+  transition:
+    transform 0.2s cubic-bezier(0.2, 0.8, 0.2, 1),
+    box-shadow 0.25s,
+    background-position 0.4s,
+    background-color 0.2s,
+    border-color 0.2s;
+}
+.pbtn::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -70%;
+  width: 40%;
+  height: 100%;
+  z-index: -1;
+  background: linear-gradient(100deg, transparent, #ffffff55, transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s ease;
+}
+.pbtn:hover {
+  transform: translateY(-2px);
+}
+.pbtn:hover::before {
+  left: 140%;
+}
+.pbtn:active {
+  transform: translateY(0) scale(0.95);
+}
+.pbtn:focus-visible {
+  outline: 2px solid #c4b8ff;
+  outline-offset: 2px;
+}
+.pbtn:disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+.pbtn .ico {
+  display: inline-block;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.pbtn:hover .ico {
+  transform: rotate(180deg) scale(1.15);
+}
+.pbtn-primary {
+  background: linear-gradient(120deg, #7c5cff, #d946ef 55%, #ff6a88);
+  background-size: 200% 100%;
+  box-shadow:
+    0 8px 22px -8px #a855f7cc,
+    inset 0 1px 0 #ffffff40;
+}
+.pbtn-primary:hover {
+  background-position: 100% 0;
+  box-shadow:
+    0 14px 32px -8px #d946efcc,
+    inset 0 1px 0 #ffffff55;
+}
+.pbtn-glass {
+  background: #ffffff14;
+  border-color: #ffffff30;
+  backdrop-filter: blur(8px);
+  box-shadow: inset 0 1px 0 #ffffff1f;
+}
+.pbtn-glass:hover {
+  background: #7c5cff33;
+  border-color: #a99cff;
+  box-shadow: 0 10px 26px -10px #7c5cffcc;
+}
+.pbtn-ok {
+  background: linear-gradient(120deg, #10d9a0, #22d3ee);
+  color: #03231b;
+  box-shadow: 0 8px 22px -8px #10d9a0cc;
+  animation: glowok 2s ease-in-out infinite;
+}
+@keyframes glowok {
+  50% {
+    box-shadow: 0 8px 30px -4px #10d9a0ee;
+  }
+}
+.pbtn-danger {
+  background: linear-gradient(120deg, #ff2d55, #ff8a3d);
+  box-shadow:
+    0 8px 22px -8px #ff2d55cc,
+    inset 0 1px 0 #ffffff40;
+}
+.pbtn-danger:hover {
+  box-shadow: 0 14px 32px -8px #ff2d55dd;
+}
+.pbtn-soft-danger {
+  background: #ff2d5518;
+  border-color: #ff2d5555;
+  color: #ff9db0;
+}
+.pbtn-soft-danger:hover {
+  background: #ff2d5540;
+  border-color: #ff2d55;
+  color: #fff;
+  box-shadow: 0 8px 22px -10px #ff2d55;
+}
+.pbtn-icon {
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  border-radius: 0.8rem;
+  flex-shrink: 0;
+}
+.pselect {
+  height: 2.25rem;
+  border-radius: 0.8rem;
+  border: 1px solid #ffffff30;
+  background: #ffffff14;
+  padding: 0 0.6rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: #fff;
+  cursor: pointer;
+  transition:
+    border-color 0.2s,
+    background 0.2s;
+}
+.pselect:hover {
+  border-color: #a99cff;
+  background: #7c5cff22;
+}
+.pselect option {
+  background: #1a1440;
+}
+@media (prefers-reduced-motion: reduce) {
+  .pbtn,
+  .pbtn::before,
+  .pbtn .ico,
+  .pbtn-ok {
+    transition: none;
+    animation: none;
+  }
+}
